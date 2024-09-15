@@ -2,6 +2,7 @@ import mayflower.*;
 public class MovableAnimatedActor extends AnimatedActor
 {
     private Animation walkRight;
+    private Animation walkLeft;
     private Animation idle;
     private String currentAction;
     
@@ -17,23 +18,31 @@ public class MovableAnimatedActor extends AnimatedActor
         int w = getWidth();
         int h = getHeight();
         int speed = 5;
+        String newAction = null;
+        
+        if (currentAction==null)
+            newAction = "idle";
         
         if (Mayflower.isKeyDown( Keyboard.KEY_RIGHT ))
         {
+            newAction = "walkRight";
             setLocation(x+speed,y);
         }
-        if (Mayflower.isKeyDown( Keyboard.KEY_LEFT ))
+        else if (Mayflower.isKeyDown( Keyboard.KEY_LEFT ))
         {
+            newAction = "walkLeft";
             setLocation(x-speed,y);
         }
-        if (Mayflower.isKeyDown( Keyboard.KEY_DOWN ))
+        else if (Mayflower.isKeyDown( Keyboard.KEY_DOWN ))
         {
             setLocation(x,y+speed);
         }
-        if (Mayflower.isKeyDown( Keyboard.KEY_UP ))
+        else if (Mayflower.isKeyDown( Keyboard.KEY_UP ))
         {
             setLocation(x,y-speed);
         }
+        else
+            newAction = "idle";
         
         if (x>=(800-w))
         {
@@ -52,11 +61,26 @@ public class MovableAnimatedActor extends AnimatedActor
             setLocation(x,600-h-1);
         }
         super.act();
+        
+        if (!newAction.equals(currentAction) && newAction!=null)
+        {
+            if (newAction.equals("idle"))
+                setAnimation(idle);
+            else if (newAction.equals("walkRight"))
+                setAnimation(walkRight);
+            else if (newAction.equals("walkLeft"))
+                setAnimation(walkLeft);
+        }
     }
     
     public void setWalkRightAnimation(Animation ani)
     {
         walkRight = ani;
+    }
+    
+    public void setWalkLeftAnimation(Animation ani)
+    {
+        walkLeft = ani;
     }
     
     public void setIdleAnimation(Animation ani)

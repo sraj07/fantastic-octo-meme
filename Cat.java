@@ -4,6 +4,7 @@ public class Cat extends MovableAnimatedActor
 {
     private int currentFrame;
     private Animation walkRight;
+    private Animation walkLeft;
     private Animation idle;
     
     public Cat()
@@ -16,7 +17,19 @@ public class Cat extends MovableAnimatedActor
         walkRight = new Animation(50, walkRightAnimation);
         walkRight.scale(100,87);
         walkRight.setTransparency(3);
+        setAnimation(walkRight);
         setWalkRightAnimation(walkRight);
+        
+        String[] walkLeftAnimation = new String[10];
+        for (int i=0;i<10;i++)
+        {
+            walkLeftAnimation[i] = "img/cat/Walk (" + (i+1) + ").png";
+        }
+        walkLeft = new Animation(50, walkLeftAnimation);
+        walkLeft.mirrorHorizontally();
+        walkLeft.scale(100,87);
+        walkLeft.setTransparency(3);
+        setWalkLeftAnimation(walkLeft);
         
         String[] idleAnimation = new String[10];
         for (int i=0;i<10;i++)

@@ -49,5 +49,12 @@ public class Animation
             frames[i].setTransparency(percent);
         }
     }
+    
+    public void mirrorHorizontally()
+    {
+        for (int i=0;i<frames.length;i++){
+            frames[i].mirrorHorizontally();
+        }
+    }
 }
 
