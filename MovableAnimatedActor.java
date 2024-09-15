@@ -4,45 +4,94 @@ public class MovableAnimatedActor extends AnimatedActor
     private Animation walkRight;
     private Animation walkLeft;
     private Animation idle;
+    private Animation idleLeft;
+    private Animation fallRight;
+    private Animation fallLeft;
     private String currentAction;
+    private String direction;
     
     public MovableAnimatedActor()
     {   
         super();
+        direction = "right";
     }
     
     public void act()
     {
+        String newAction = null;
         int x = getX();
         int y = getY();
         int w = getWidth();
         int h = getHeight();
         int speed = 5;
-        String newAction = null;
         
         if (currentAction==null)
-            newAction = "idle";
+        {
+            if (isFalling())
+            {
+                if (direction.equals("left"))
+                    newAction = "fallLeft";
+                else if (direction.equals("right"))
+                    newAction = "fallRight";
+            }
+            else
+            {
+                if (direction.equals("left"))
+                    newAction = "idleLeft";
+                else if (direction.equals("right"))
+                    newAction = "idle";
+            }
+        }
         
         if (Mayflower.isKeyDown( Keyboard.KEY_RIGHT ))
         {
             newAction = "walkRight";
+            direction = "right";
             setLocation(x+speed,y);
+            if (isBlocked())
+                setLocation(x-1,y);
         }
         else if (Mayflower.isKeyDown( Keyboard.KEY_LEFT ))
         {
             newAction = "walkLeft";
+            direction = "left";
             setLocation(x-speed,y);
+            if (isBlocked())
+                setLocation(x+1,y);
         }
         else if (Mayflower.isKeyDown( Keyboard.KEY_DOWN ))
         {
+            if (direction.equals("left"))
+                newAction = "walkLeft";
+            else if (direction.equals("right"))
+                newAction = "walkRight";
             setLocation(x,y+speed);
         }
         else if (Mayflower.isKeyDown( Keyboard.KEY_UP ))
         {
+            if (direction.equals("left"))
+                newAction = "walkLeft";
+            else if (direction.equals("right"))
+                newAction = "walkRight";
             setLocation(x,y-speed);
         }
         else
-            newAction = "idle";
+        {
+            if (isFalling())
+            {
+                if (direction != null && direction.equals("left"))
+                newAction = "fallLeft";
+            else if (direction != null && direction.equals("right"))
+                newAction = "fallRight";
+            }
+            else
+            {
+                if (direction != null && direction.equals("left"))
+                    newAction = "idleLeft";
+                else if (direction != null && direction.equals("right"))
+                    newAction = "idle";
+            }
+        }
         
         if (x>=(800-w))
         {
@@ -62,14 +111,20 @@ public class MovableAnimatedActor extends AnimatedActor
         }
         super.act();
         
-        if (!newAction.equals(currentAction) && newAction!=null)
+        if (newAction!=null && !newAction.equals(currentAction))
         {
-            if (newAction.equals("idle"))
+            if (newAction.equals("idleLeft"))
+                setAnimation(idleLeft);
+            else if (newAction.equals("idle"))
                 setAnimation(idle);
             else if (newAction.equals("walkRight"))
                 setAnimation(walkRight);
             else if (newAction.equals("walkLeft"))
                 setAnimation(walkLeft);
+            else if (newAction.equals("fallRight"))
+                setAnimation(fallRight);
+            else if (newAction.equals("fallLeft"))
+                setAnimation(fallLeft);
         }
     }
     
@@ -86,6 +141,21 @@ public class MovableAnimatedActor extends AnimatedActor
     public void setIdleAnimation(Animation ani)
     {
         idle = ani;
+    }
+    
+    public void setIdleLeftAnimation(Animation ani)
+    {
+        idleLeft = ani;
+    }
+    
+    public void setFallRightAnimation(Animation ani)
+    {
+        fallRight = ani;
+    }
+    
+    public void setFallLeftAnimation(Animation ani)
+    {
+        fallLeft = ani;
     }
     
     public void setAnimation(Animation a)

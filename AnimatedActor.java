@@ -1,6 +1,6 @@
 import mayflower.*;
 
-public class AnimatedActor extends Actor
+public class AnimatedActor extends GravityActor
 {
     private Animation animation;
     private Timer animationTimer;
@@ -23,5 +23,6 @@ public class AnimatedActor extends Actor
             setImage(nextFrame);
             animationTimer.reset();
         }
+        super.act();
     }
 }

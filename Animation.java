@@ -56,5 +56,12 @@ public class Animation
             frames[i].mirrorHorizontally();
         }
     }
+    
+    public void setBounds(int x, int y, int w, int h)
+    {
+        for (int i=0;i<frames.length;i++){
+            frames[i].crop(x, y, w, h);
+        }
+    }
 }
 

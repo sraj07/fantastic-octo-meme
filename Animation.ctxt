@@ -12,4 +12,6 @@ comment5.params=percent
 comment5.target=void\ setTransparency(int)
 comment6.params=
 comment6.target=void\ mirrorHorizontally()
-numComments=7
+comment7.params=x\ y\ w\ h
+comment7.target=void\ setBounds(int,\ int,\ int,\ int)
+numComments=8
